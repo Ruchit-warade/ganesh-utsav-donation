@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizer Login | Ganesh Utsav IIT Mandi</title>
+  <meta name="description" content="Restricted organizer login for the Ganesh Utsav 2026 contribution portal." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader">
+    <div><div class="spinner"></div><div class="pl-text">Loading…</div></div>
+  </div>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">🛡️</div>
+      <h1>Organizer Portal</h1>
+      <p class="sub">Restricted access. Admin credentials required.</p>
+
+      <form id="admin-login-form" novalidate>
+        <div class="form-group" style="text-align:left;">
+          <label for="admin-email">Email</label>
+          <input type="email" id="admin-email" name="email" autocomplete="username" placeholder="admin@example.com" required />
+        </div>
+        <div class="form-group" style="text-align:left;">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" name="password" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+        <button class="btn-submit" type="submit" id="admin-login-btn">Sign In</button>
+      </form>
+
+      <p class="auth-msg" id="auth-msg" role="status"></p>
+      <p style="margin-top:14px;font-size:.82rem;color:#9a6a3a;">
+        <a href="./index.html" style="text-decoration:underline;">← Back to home</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="./admin-login.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contribute | Ganesh Utsav IIT Mandi 2026</title>
+  <meta name="description" content="Make a secure, verified contribution to Ganesh Utsav 2026 at IIT Mandi." />
+  <meta property="og:title" content="Contribute | Ganesh Utsav IIT Mandi 2026" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader">
+    <div><div class="spinner"></div><div class="pl-text">Verifying your session…</div></div>
+  </div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="./index.html" class="brand"><span class="brand-badge">🪷</span><span>Ganesh Utsav&nbsp;2026</span></a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="./index.html">Home</a>
+        <a href="./leaderboard.html">Leaderboard</a>
+        <a href="./about.html">About</a>
+        <a href="./donate.html" class="active">Contribute</a>
+      </nav>
+      <div class="nav-actions" id="nav-actions"></div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <div class="pagehead">
+    <h1>Make a Contribution</h1>
+    <p>Complete your payment using the official method, then submit the transaction reference for verification.</p>
+  </div>
+
+  <main class="container" style="padding-top:34px;padding-bottom:60px;">
+    <!-- Gated content; donate.js only unhides this after auth is confirmed -->
+    <div id="gate" hidden>
+      <div class="form-card">
+        <!-- Signed-in banner -->
+        <div class="signed-in-box" id="signedin-box" style="display:flex;gap:12px;align-items:center;background:var(--cream-2);border:1px solid rgba(230,168,23,.4);border-radius:14px;padding:14px 16px;margin-bottom:24px;">
+          <img id="signin-avatar" class="avatar" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" alt="" />
+          <div>
+            <div style="font-weight:700;color:var(--maroon);" id="signin-name">—</div>
+            <div style="font-size:.9rem;color:#8a5a2b;">Signed in as: <span id="signin-email">—</span></div>
+          </div>
+        </div>
+
+        <!-- STEP 1: Category -->
+        <h3 style="margin:8px 0 4px;color:var(--maroon-deep);">Step 1 · Choose your category</h3>
+        <p style="font-size:.9rem;color:#9a6a3a;margin-bottom:16px;">Students need a roll number. Faculty &amp; staff don't.</p>
+        <div class="cat-grid" id="cat-grid">
+          <div class="cat-card" data-cat="student" role="button" tabindex="0" aria-pressed="false">
+            <div class="emoji">🎓</div><h4>Student</h4><p>Roll number required</p>
+          </div>
+          <div class="cat-card" data-cat="faculty" role="button" tabindex="0" aria-pressed="false">
+            <div class="emoji">🧑‍🏫</div><h4>Faculty</h4><p>Teaching / research staff</p>
+          </div>
+          <div class="cat-card" data-cat="staff" role="button" tabindex="0" aria-pressed="false">
+            <div class="emoji">🔧</div><h4>Staff</h4><p>Non-teaching staff</p>
+          </div>
+        </div>
+
+        <div id="roll-group" class="form-group" hidden>
+          <label for="roll-number">Roll Number</label>
+          <input type="text" id="roll-number" name="roll" autocomplete="off" placeholder="e.g. B23CSE0XX" />
+        </div>
+
+        <hr style="border:none;border-top:1px solid #f0e8d8;margin:26px 0;" />
+
+        <!-- STEP 2: Name / amount / message -->
+        <h3 style="margin:8px 0 4px;color:var(--maroon-deep);">Step 2 · Your contribution</h3>
+        <p style="font-size:.9rem;color:#9a6a3a;margin-bottom:16px;">Your email is tied to your IIT Mandi account and cannot be changed here.</p>
+
+        <div class="form-group">
+          <label for="d-name">Full Name</label>
+          <input type="text" id="d-name" name="name" value="" />
+        </div>
+
+        <div class="form-group">
+          <label for="d-email">Email <span style="color:#16a34a;">(read-only)</span></label>
+          <input type="email" id="d-email" name="email" readonly />
+        </div>
+
+        <div class="form-group">
+          <label for="d-phone">Phone (optional)</label>
+          <input type="tel" id="d-phone" name="phone" placeholder="+91 …" autocomplete="tel" />
+        </div>
+
+        <div class="form-group">
+          <label for="d-amount">Contribution Amount (₹)</label>
+          <input type="number" id="d-amount" name="amount" min="1" step="1" placeholder="e.g. 500" inputmode="numeric" />
+        </div>
+
+        <div class="form-group">
+          <label for="d-message">Message (optional)</label>
+          <textarea id="d-message" name="message" placeholder="A short note for the festival…"></textarea>
+        </div>
+
+        <!-- STEP 3: Payment -->
+        <h3 style="margin:26px 0 4px;color:var(--maroon-deep);">Step 3 · Official payment</h3>
+        <p style="font-size:.9rem;color:#9a6a3a;margin-bottom:16px;">We never ask for card details, CVV, OTP or UPI PIN. Pay with your own UPI app using the official QR / UPI ID below.</p>
+
+        <div class="pay-panel" id="pay-panel">
+          <div>
+            <div class="pay-qr" id="qr-box">
+              <img id="qr-img" src="./assets/images/upi-qr.png" alt="Official UPI QR code" referrerpolicy="no-referrer" />
+            </div>
+          </div>
+          <div class="pay-meta">
+            <div class="payee">Payee: <span id="payee-name">—</span></div>
+            <div class="upi" id="upi-id">—</div>
+            <div class="pay-instructions" id="pay-instructions"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="d-txn">Transaction Reference / UTR Number</label>
+          <input type="text" id="d-txn" name="txn" autocomplete="off" placeholder="e.g. 4xxxxxxxx6" />
+          <div class="hint">Found in the success screen of your UPI app after payment.</div>
+        </div>
+
+        <div class="checked-row">
+          <input type="checkbox" id="d-confirm" />
+          <label for="d-confirm">I confirm that I have completed the contribution using the official payment method.</label>
+        </div>
+
+        <div class="checked-row">
+          <input type="checkbox" id="d-public" checked />
+          <label for="d-public">Display my name on the public leaderboard.</label>
+        </div>
+
+        <button class="btn-submit" id="submit-btn">Submit Contribution</button>
+      </div>
+    </div>
+
+    <!-- Loading / unauthenticated states -->
+    <div id="auth-loading" class="empty-state" style="display:none;"><div class="spinner"></div><p style="margin-top:14px;">Checking your sign-in…</p></div>
+    <div id="need-login" class="empty-state" style="display:none;">
+      <span class="emoji">🔐</span>
+      <h2 style="color:var(--maroon);margin:10px 0;">Please sign in to make a contribution.</h2>
+      <p style="margin-bottom:16px;">You need an authorized IIT Mandi account to contribute.</p>
+      <a href="./login.html" class="btn-xl btn-primary" style="display:inline-block;">Sign In</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="f-brand">Ganesh Utsav 2026 · IIT Mandi</div>
+    <div class="f-links">
+      <a href="./leaderboard.html">Leaderboard</a>
+      <a href="./about.html">About</a>
+      <a href="./my-contributions.html">My Contributions</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./donate.js"></script>
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

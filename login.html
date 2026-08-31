@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | Ganesh Utsav IIT Mandi 2026</title>
+  <meta name="description" content="Sign in or create an account with your IIT Mandi email to contribute to Ganesh Utsav 2026." />
+  <meta property="og:title" content="Sign In | Ganesh Utsav IIT Mandi 2026" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader">
+    <div><div class="spinner"></div><div class="pl-text">Loading…</div></div>
+  </div>
+
+  <div class="auth-wrap">
+    <div class="auth-card" id="auth-card">
+      <div class="auth-logo">🪷</div>
+      <h1>Welcome to Ganesh Utsav</h1>
+      <p class="sub">Sign in to make your contribution.</p>
+
+      <!-- Mode toggle -->
+      <div class="auth-tabs" role="tablist" aria-label="Sign in or create account" style="display:flex;background:rgba(0,0,0,0.05);border-radius:12px;padding:4px;margin-bottom:22px;">
+        <button class="auth-tab active" id="tab-signin" role="tab" aria-selected="true" style="flex:1;padding:10px;border:none;border-radius:9px;background:#fff;font-weight:700;color:var(--maroon);box-shadow:0 1px 4px rgba(0,0,0,0.08);">Sign In</button>
+        <button class="auth-tab" id="tab-signup" role="tab" aria-selected="false" style="flex:1;padding:10px;border:none;border-radius:9px;background:transparent;font-weight:700;color:#8a5a2b;">Create Account</button>
+      </div>
+
+      <!-- ============ SIGN IN ============ -->
+      <div id="signin-panel">
+        <button class="btn-google" id="google-signin">
+          <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="divider">or use email</div>
+
+        <form id="signin-form" novalidate>
+          <div class="form-group" style="text-align:left;">
+            <label for="si-email">Email</label>
+            <input type="email" id="si-email" name="email" autocomplete="email" placeholder="you@iitmandi.ac.in" required />
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label for="si-password">Password</label>
+            <input type="password" id="si-password" name="password" autocomplete="current-password" placeholder="••••••••" required />
+          </div>
+          <button class="btn-submit" type="submit" id="signin-btn">Sign In</button>
+        </form>
+      </div>
+
+      <!-- ============ SIGN UP ============ -->
+      <div id="signup-panel" hidden>
+        <form id="signup-form" novalidate>
+          <div class="form-group" style="text-align:left;">
+            <label for="su-name">Full Name</label>
+            <input type="text" id="su-name" name="name" autocomplete="name" placeholder="Your full name" required />
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label for="su-email">IIT Mandi Email</label>
+            <input type="email" id="su-email" name="email" autocomplete="email" placeholder="you@iitmandi.ac.in" required />
+            <div class="hint">Must be an authorised IIT Mandi email domain.</div>
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label for="su-password">Password</label>
+            <input type="password" id="su-password" name="password" autocomplete="new-password" placeholder="At least 6 characters" minlength="6" required />
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label for="su-confirm">Confirm Password</label>
+            <input type="password" id="su-confirm" name="confirm" autocomplete="new-password" placeholder="Repeat password" required />
+          </div>
+          <button class="btn-submit" type="submit" id="signup-btn">Create Account</button>
+        </form>
+        <p style="font-size:.82rem;color:#8a5a2b;margin-top:14px;">Already have an account? <button type="button" id="go-signin" style="background:none;border:none;color:var(--saffron-deep);font-weight:700;text-decoration:underline;">Sign in</button></p>
+      </div>
+
+      <div class="divider" style="margin-top:24px;">Organizer?</div>
+      <button class="btn-admin" id="admin-login-btn">Admin Login</button>
+
+      <p class="auth-msg" id="auth-msg" role="status"></p>
+    </div>
+  </div>
+
+  <script type="module" src="./login.js"></script>
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ------------------------------------------------------------
+       Helper functions
+    ------------------------------------------------------------ */
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // An admin is a signed-in user whose UID has a doc in `admins`
+    // with role == 'admin'. Bootstrap of the FIRST admin must happen
+    // in the Firebase Console (see README) because normal users cannot
+    // write to `admins`.
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    /* ------------------------------------------------------------
+       users/{uid} — contributor profiles
+       Users may read + create/update ONLY their own profile, and may
+       never set role to anything but 'contributor'.
+    ------------------------------------------------------------ */
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 'contributor';
+
+      // Update allowed only if the user keeps the same UID and the same,
+      // non-admin role. Admin changes go through the console if needed.
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.role != 'admin';
+
+      allow delete: if isAdmin();
+    }
+
+    /* ------------------------------------------------------------
+       contributions/{id} — the private, verifiable records
+       - CREATE: an authenticated user can only create a contribution
+         that is their own AND has status 'pending' with
+         verifiedAt == null and verifiedBy == null.
+         (=> a client can NEVER submit itself as verified/rejected.)
+       - READ: users see only their own; admins see all.
+       - UPDATE/DELETE: admins only (verification lifecycle).
+    ------------------------------------------------------------ */
+    match /contributions/{id} {
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.verifiedAt == null
+        && request.resource.data.verifiedBy == null;
+
+      allow read: if signedIn()
+        && (resource.data.userId == request.auth.uid || isAdmin());
+
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /* ------------------------------------------------------------
+       admins/{uid} — restricted collection
+       Only admins may read/write. Normal users have no access.
+       The first admin is created manually in the Firebase Console
+       (Auth user + matching admins/{UID} doc).
+    ------------------------------------------------------------ */
+    match /admins/{uid} {
+      allow read, write: if isAdmin();
+    }
+
+    /* ------------------------------------------------------------
+       publicLeaderboard/{id} — public, read-only for everyone
+       Only admins can create/update/delete. Contains ONLY safe
+       display fields (displayName, category, amount, verifiedAt) —
+       never email/phone/roll number/transaction ref/message.
+    ------------------------------------------------------------ */
+    match /publicLeaderboard/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /* ------------------------------------------------------------
+       publicStats/summary — public read, admin write only.
+       Only counts VERIFIED contributions (maintained by admin.js).
+    ------------------------------------------------------------ */
+    match /publicStats/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+  }
+}

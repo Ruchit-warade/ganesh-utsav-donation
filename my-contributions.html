@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Contributions | Ganesh Utsav IIT Mandi 2026</title>
+  <meta name="description" content="View your verified, pending and rejected contributions to Ganesh Utsav 2026." />
+  <meta property="og:title" content="My Contributions | Ganesh Utsav IIT Mandi 2026" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader">
+    <div><div class="spinner"></div><div class="pl-text">Loading your contributions…</div></div>
+  </div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="./index.html" class="brand"><span class="brand-badge">🪷</span><span>Ganesh Utsav&nbsp;2026</span></a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="./index.html">Home</a>
+        <a href="./leaderboard.html">Leaderboard</a>
+        <a href="./about.html">About</a>
+        <a href="./donate.html">Contribute</a>
+      </nav>
+      <div class="nav-actions" id="nav-actions"></div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <div class="pagehead">
+    <h1>My Contributions</h1>
+    <p>Keep track of what you've contributed and its verification status.</p>
+  </div>
+
+  <main class="container" style="padding-top:34px;padding-bottom:60px;">
+    <div id="auth-loading" class="empty-state" style="display:none;"><div class="spinner"></div><p style="margin-top:14px;">Checking your session…</p></div>
+    <div id="need-login" class="empty-state" style="display:none;">
+      <span class="emoji">🔐</span>
+      <h2 style="color:var(--maroon);margin:10px 0;">Please sign in to view your contributions.</h2>
+      <a href="./login.html" class="btn-xl btn-primary" style="display:inline-block;">Sign In</a>
+    </div>
+
+    <div id="mc-content" hidden>
+      <div class="adm-table-wrap" style="overflow-x:auto;">
+        <table class="lb-table" id="mc-table">
+          <thead>
+            <tr><th>Date</th><th>Category</th><th>Amount</th><th>Transaction</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody id="mc-body"></tbody>
+        </table>
+      </div>
+      <div id="mc-empty" class="empty-state" style="display:none;">
+        <span class="emoji">🪷</span>
+        <p>You haven't made a contribution yet.</p>
+        <a href="./donate.html" class="btn-xl btn-primary" style="display:inline-block;margin-top:16px;">Make your first contribution</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="f-brand">Ganesh Utsav 2026 · IIT Mandi</div>
+    <div class="f-links">
+      <a href="./index.html">Home</a>
+      <a href="./leaderboard.html">Leaderboard</a>
+      <a href="./donate.html">Contribute</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./my-contributions.js"></script>
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

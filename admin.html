@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Ganesh Utsav IIT Mandi</title>
+  <meta name="description" content="Organizer dashboard for Ganesh Utsav 2026 contribution verification." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="admin-body is-loading">
+  <div id="page-loader" class="page-loader" style="background:#fff;">
+    <div><div class="spinner" style="border-top-color:var(--adm-primary);"></div><div class="pl-text" style="color:var(--adm-primary);">Verifying organizer access…</div></div>
+  </div>
+
+  <!-- Authorization gate: admin.js only renders this when authorized -->
+  <div id="admin-app" hidden>
+    <div class="adm-shell">
+      <aside class="adm-sidebar" id="adm-sidebar">
+        <div class="adm-brand"><span class="b">🪷</span> Ganesh Utsav Admin</div>
+        <nav class="adm-nav" aria-label="Admin">
+          <button data-view="dashboard" class="active">📊 &nbsp;Dashboard</button>
+          <button data-view="pending">⏳ &nbsp;Pending</button>
+          <button data-view="verified">✅ &nbsp;Verified</button>
+          <button data-view="rejected">🚫 &nbsp;Rejected</button>
+          <button data-view="all">🗂️ &nbsp;All Contributions</button>
+          <button data-view="analytics">📈 &nbsp;Analytics</button>
+          <button class="logout" id="logout-btn">🚪 &nbsp;Logout</button>
+        </nav>
+      </aside>
+
+      <main class="adm-main">
+        <div class="adm-topbar">
+          <button class="adm-hamburger" id="adm-hamburger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+          <h1 id="view-title">Dashboard</h1>
+          <button class="btn-sm btn-export" id="export-csv">⬇ Export CSV</button>
+        </div>
+
+        <!-- DASHBOARD -->
+        <section data-section="dashboard">
+          <div class="adm-grid-stat">
+            <div class="adm-stat"><div class="lbl">Pending</div><div class="val skeleton" style="width:40%"></div></div>
+            <div class="adm-stat green"><div class="lbl">Verified</div><div class="val skeleton" style="width:40%"></div></div>
+            <div class="adm-stat red"><div class="lbl">Rejected</div><div class="val skeleton" style="width:40%"></div></div>
+            <div class="adm-stat indigo"><div class="lbl">Total Verified Amount</div><div class="val skeleton" style="width:60%"></div></div>
+            <div class="adm-stat"><div class="lbl">Total Contributors</div><div class="val skeleton" style="width:40%"></div></div>
+            <div class="adm-stat"><div class="lbl">Today's Submissions</div><div class="val skeleton" style="width:40%"></div></div>
+          </div>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>Recent Contributions</h2><button class="btn-sm btn-view" data-jump="all">View all</button></div>
+            <div class="panel-body" id="dashboard-recent"></div>
+          </div>
+        </section>
+
+        <!-- PENDING -->
+        <section data-section="pending" hidden>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>Pending Contributions</h2><span id="pending-count" class="badge badge-pending">0</span></div>
+            <div class="panel-body"><div class="adm-table-wrap" style="overflow-x:auto;"><table class="adm-table" id="pending-table"><thead></thead><tbody></tbody></table></div></div>
+          </div>
+        </section>
+
+        <!-- VERIFIED -->
+        <section data-section="verified" hidden>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>Verified Contributions</h2></div>
+            <div class="panel-body"><div class="adm-table-wrap" style="overflow-x:auto;"><table class="adm-table" id="verified-table"><thead></thead><tbody></tbody></table></div></div>
+          </div>
+        </section>
+
+        <!-- REJECTED -->
+        <section data-section="rejected" hidden>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>Rejected Contributions</h2></div>
+            <div class="panel-body"><div class="adm-table-wrap" style="overflow-x:auto;"><table class="adm-table" id="rejected-table"><thead></thead><tbody></tbody></table></div></div>
+          </div>
+        </section>
+
+        <!-- ALL -->
+        <section data-section="all" hidden>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>All Contributions</h2>
+              <div class="lb-toolbar" style="margin-bottom:0;">
+                <div class="lb-filters">
+                  <button class="chip-btn active" data-af="all">All</button>
+                  <button class="chip-btn" data-af="pending">Pending</button>
+                  <button class="chip-btn" data-af="verified">Verified</button>
+                  <button class="chip-btn" data-af="rejected">Rejected</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body"><div class="adm-table-wrap" style="overflow-x:auto;"><table class="adm-table" id="all-table"><thead></thead><tbody></tbody></table></div></div>
+          </div>
+        </section>
+
+        <!-- ANALYTICS -->
+        <section data-section="analytics" hidden>
+          <div class="adm-grid-stat">
+            <div class="adm-stat indigo"><div class="lbl">Total Verified Amount</div><div class="val" id="an-total">—</div></div>
+            <div class="adm-stat"><div class="lbl">Verified Contributions</div><div class="val" id="an-count">—</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="adm-panel">
+              <div class="panel-head"><h2>Contributions by Category</h2></div>
+              <div class="panel-body chart-box"><canvas id="chart-category"></canvas>
+                <div class="legend-inline" id="legend-category"></div>
+              </div>
+            </div>
+            <div class="adm-panel">
+              <div class="panel-head"><h2>Status Overview</h2></div>
+              <div class="panel-body chart-box"><canvas id="chart-status"></canvas>
+                <div class="legend-inline" id="legend-status"></div>
+              </div>
+            </div>
+          </div>
+          <div class="adm-panel">
+            <div class="panel-head"><h2>Top Contributors (Verified)</h2></div>
+            <div class="panel-body"><div class="adm-table-wrap" style="overflow-x:auto;"><table class="adm-table" id="top-table"><thead></thead><tbody></tbody></table></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Access denied state -->
+  <div id="admin-denied" class="empty-state" style="display:none;position:fixed;inset:0;display:none;place-items:center;background:#fff;">
+    <div><span class="emoji">🚫</span><h2 style="color:var(--adm-text);margin-top:10px;">Access Denied</h2>
+      <p style="color:var(--adm-muted);">You don't have organizer access.</p>
+      <a href="./admin-login.html" class="btn-xl btn-primary" style="margin-top:18px;">Back to Organizer Login</a>
+    </div>
+  </div>
+
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
